@@ -10,6 +10,7 @@ mkdir -p ~/.claude/skills
 ln -s ~/Code/claude-skills/brief ~/.claude/skills/brief
 ln -s ~/Code/claude-skills/pr-review ~/.claude/skills/pr-review
 ln -s ~/Code/claude-skills/review-cycle ~/.claude/skills/review-cycle
+ln -s ~/Code/claude-skills/desloppify-comments ~/.claude/skills/desloppify-comments
 ```
 
 Claude Code follows symlinks in `~/.claude/skills/`, and loads a target only once
@@ -26,6 +27,8 @@ Skills here are personal-scope: available in every project, and to subagents.
   with the built-in `/code-review` command.
 - `review-cycle` — drive a PR to merge through an author/reviewer subagent loop,
   severity-tagged reviews posted to the PR as comments, then merge on green CI.
+- `desloppify-comments` — delete comments that say what the code does or how it works,
+  keeping only why it must be this way and what breaks otherwise.
 
 `pr-review` and `review-cycle` share review lenses but differ in shape: `pr-review`
 is one deep pass producing a report for a person to read; `review-cycle` is an
