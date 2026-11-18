@@ -16,7 +16,9 @@ jumpy transitions. This skill makes the audit about **the rendered result**, in 
 2. **Desktop first.** Primary viewports 1440×900 and 1920×1080; also 1280, 2560, 1024, 768, 390. Light and dark.
 3. **Every screen in every state:** empty (new account), realistic data, heavy data (long names, many rows, big
    numbers), loading (API slowed to 2–3 s), error (500/403/timeout), each role. A screen only checked with seed
-   data is not checked.
+   data is not checked. Always include the **first-login states** a new customer actually sees: a brand-new
+   account, one test item, a handful of items below every threshold, and sample/demo data switched on, each at
+   1440, 1920 and the widest viewport.
 4. **Fix at the token or component level.** A spacing bug on one page is almost always a bug in a shared
    container, card, header or token. One-off pixel nudges on a page are rejected in review.
 5. **Evidence or it didn't happen.** Every finding: screen, state, viewport, theme, a cropped screenshot, the rule
@@ -56,6 +58,10 @@ jumpy transitions. This skill makes the audit about **the rendered result**, in 
 | Affordances | logo links home; every clickable has pointer cursor, hover and visible focus; hit targets ≥ 24 px desktop / 44 px touch |
 | Overflow | clipped or overflowing text (scrollWidth > clientWidth without an ellipsis/tooltip design), horizontal page scroll |
 | Debug artefacts | rule 7 |
+| Page grid | top-level blocks of a page share the same left and right edges, or sit on the page's declared grid columns; flag any block whose right edge differs from its siblings' by more than one spacing token |
+| Rule density | two horizontal rules/borders closer than the section-spacing token (a table's header rule + column-label rule, stacked card tops, a chart rule under a tile row) |
+| Repeated placeholders | the same empty/"not enough data" text in two or more sibling tiles or panels; one shared empty state is expected instead |
+| Consistent figures | the same metric shown in two places on a screen (page, sidebar, header) must agree, and copy must not refer to UI that isn't on screen |
 Write these as a reusable test suite in the project (Playwright + axe + small DOM/computed-style lints), not as
 throw-away scripts: step 6 turns them into a CI gate.
 
@@ -64,6 +70,11 @@ throw-away scripts: step 6 turns them into a CI gate.
   not the code and not each other's notes. Score 1–5 and list findings for: hierarchy, balance and density;
   alignment and spacing rhythm; typography (scale, weight, line length); colour and contrast; consistency with
   other screens; quality of empty/loading/error states; motion (from frame strips); fidelity to the design.
+- **Whole-page first impression, judged separately from components.** One reviewer per screen × state sees only
+  the full viewport screenshot at 1920 and the widest size, cold, and answers: does this look finished and
+  balanced to a paying customer seeing it for the first time? Anything below 4/5 is a finding against the page's
+  composition (grid, density, hierarchy), even when every component on it passes. Components passing is not
+  evidence that the page passes.
 - A finding survives if both reviewers raise it, or a third adjudicator confirms it from the evidence.
 - Compare with the design artboards side by side; list every deviation as "intentional?" for the owner when the
   design and the product disagree and neither is clearly wrong.
